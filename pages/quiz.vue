@@ -1,11 +1,11 @@
 <template>
-  <div id="quizBody">
+  <div id="quizBody" class="fade-in">
     <ProgressBar />
     <div id="questionCounter">
       Question {{ questionsAttempted }}<span id="totalQuestions">/10</span>
     </div>
     <hr style="border-style: dotted; border-width: 1px" />
-    <div id="question">{{ question }}</div>
+    <div id="question" v-html="question"></div>
     <div class="choices">
       <div
         :class="{ choice: true, selected: selected == choice }"
@@ -13,22 +13,26 @@
         :key="choice"
         @click="selected = choice"
       >
-        <div class="choiceText">{{ choice }}</div>
-        <!-- <input
-          type="radio"
-          name="choices"
-          v-model="selected"
-          :value="choice"
-          class="checkBox"
-        /> -->
+        <div class="choiceText" v-html="choice"></div>
       </div>
     </div>
-    <div class="plainButton bouncy" @click="nextQuestion">Submit!</div>
+    <button
+      :class="{
+        button: true,
+        'is-outline': true,
+        'is-loading': isLoading,
+        'is-fullwidth': true,
+        'is-large': true,
+      }"
+      @click="nextQuestion"
+    >
+      Submit!
+    </button>
     <div
       v-show="selected"
       :class="{ status: true, correct: selected == correctAnswer }"
     >
-      Selected answer: {{ selected }}
+      Selected answer: {{ selectedText }}
     </div>
   </div>
 </template>
@@ -36,27 +40,54 @@
 <script>
 const axios = require('axios')
 const shuffle = require('shuffle-array')
+const htmlToText = require('html-to-text')
 export default {
+  head: {
+    title: 'Quiz | Scholared',
+    meta: [{ charset: 'utf-8' }],
+  },
   data() {
-    let question = null
-    let choices = ['This is opt 1', 'This is opt 2', 'This is opt 3']
-    let selected = null
-    let correctAnswer = null
-    let currentQuestionNumber = 1
-    let correctAnswerCount = 0
-    let questionsAttempted = 0
-    return { choices, selected, correctAnswer, question, currentQuestionNumber, questionsAttempted }
+    return {
+      choices: null,
+      selected: null,
+      correctAnswer: null,
+      question: null,
+      currentQuestionNumber: 1,
+      questionsAttempted: 0,
+      isLoading: false,
+    }
   },
   methods: {
-    nextQuestion: function() {
+    async nextQuestion() {
       if (this.selected == this.correctAnswer) {
         this.correctAnswerCount++
       }
-      this.questionsAttempted++
-      this.$fetch()
+      await this.$fetch()
+    },
+  },
+  computed: {
+    selectedText: function () {
+      return htmlToText.fromString(this.selected)
     },
   },
   async fetch() {
+    this.isLoading = true
+    await axios
+      .get(
+        'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
+      )
+      .then((response) => {
+        let result = response.data.results[0]
+        this.question = result.question
+        this.choices = [...result.incorrect_answers, result.correct_answer]
+        shuffle(this.choices)
+        this.correctAnswer = result.correct_answer
+        this.questionsAttempted++
+        this.selected = null
+        this.isLoading = false
+      })
+  },
+  async asyncData({ params }) {
     await axios
       .get(
         'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
@@ -65,16 +96,14 @@ export default {
         console.log(response)
         console.log(response.data.results[0])
         let result = response.data.results[0]
-        this.question = result.question
-        this.choices = [...result.incorrect_answers, result.correct_answer]
-        shuffle(this.choices)
-        this.correctAnswer = result.correct_answer
+        let question = result.question
+        let choices = [...result.incorrect_answers, result.correct_answer]
+        shuffle(choices)
+        let correctAnswer = result.correct_answer
+        return { result, question, choices, correctAnswer }
       })
   },
-  // async asyncData({ params }) {
-  //   const { data } = await axios.get(`https://my-api/posts/${params.id}`)
-  //   return { title: data.title }
-  // }
+  loading: true,
 }
 </script>
 
@@ -106,7 +135,7 @@ body {
 }
 
 .choices {
-  margin: 10% 0% 10% 0%;
+  margin: 10% 0% 5% 0%;
   display: grid;
   grid-template-columns: 50% 50%;
   column-gap: 10px;
@@ -126,6 +155,10 @@ body {
   cursor: pointer;
 }
 
+.choice:hover {
+  border: 4px solid #3875a5;
+}
+
 .checkBox {
   opacity: 0;
   margin: 10% 15%;
@@ -134,7 +167,7 @@ body {
 
 .selected {
   background: #204c6e;
-  border: 4px solid #243150;
+  border: 4px solid #3875a5;
 }
 
 .status {
@@ -146,50 +179,26 @@ body {
   color: greenyellow;
 }
 
-.bouncy {
-  animation: bouncy 5s infinite linear;
-  position: relative;
-}
-@keyframes bouncy {
-  0% {
-    top: 0em;
-  }
-  40% {
-    top: 0em;
-  }
-  43% {
-    top: -0.9em;
-  }
-  46% {
-    top: 0em;
-  }
-  48% {
-    top: -0.4em;
-  }
-  50% {
-    top: 0em;
-  }
-  100% {
-    top: 0em;
-  }
+.fade-in {
+  -webkit-animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 
-.plainButton {
-  display: inline-block;
-  padding: 0.35em 1.2em;
-  border: 0.1em solid #ffffff;
-  margin: 0 0.3em 0.3em 0;
-  border-radius: 0.5em;
-  box-sizing: border-box;
-  text-decoration: none;
-  cursor: pointer;
-  color: #f6f6f6;
-  text-align: center;
-  transition: all 0.2s;
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-.plainButton:hover {
-  color: #000000;
-  background-color: #ffffff;
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media all and (max-width: 30em) {

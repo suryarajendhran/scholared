@@ -182,7 +182,7 @@ body {
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #3d3131;
   text-align: center;
   transition: all 0.2s;
 }

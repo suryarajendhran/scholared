@@ -86,6 +86,7 @@ body {
   /* height: 100%; */
   /* width: 100%; */
   padding: 5% 10%;
+  background-color: #252c4a;
   /* background-color: aliceblue; */
 }
 

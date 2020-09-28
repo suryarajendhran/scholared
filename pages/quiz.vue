@@ -59,7 +59,7 @@ export default {
   async fetch() {
     await axios
       .get(
-        'https://opentdb.com/api.php?amount=1&category=27&difficulty=easy&type=multiple'
+        'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
       )
       .then((response) => {
         console.log(response)

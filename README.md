@@ -1,4 +1,4 @@
-# scholared
+# Scholared
 
 ## Build Setup
 

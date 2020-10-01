@@ -24,12 +24,17 @@
       </div>
     </div>
     <button :class="submitClass" @click="nextQuestion">Submit!</button>
-    <!-- <div
+    <div
       v-show="selected"
-      :class="{ status: true, correct: selected == correctAnswer }"
+      :class="{
+        status: true,
+        correct: selected == correctAnswer,
+        'is-size-2-desktop': true,
+        'py-3': true,
+      }"
     >
       Selected answer: {{ selectedText }}
-    </div> -->
+    </div>
   </div>
 </template>
 

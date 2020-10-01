@@ -1,5 +1,5 @@
 <template>
-  <div id="quizBody" class="fade-in">
+  <div id="quizBody" class="container px-2 py-2 fade-in">
     <ProgressBar />
     <div id="questionCounter" class="is-size-2-desktop is-size-3-tablet is-size-4-mobile">
       Question {{ questionsAttempted }}<span id="totalQuestions">/10</span>
@@ -105,9 +105,13 @@ export default {
 <style>
 body {
   background-color: #252c4a;
+  overflow: hidden;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
+
 #quizBody {
-  padding: 5% 10%;
   background-color: #252c4a;
 }
 

@@ -23,7 +23,7 @@ $ yarn generate
 
 - [x] Retrieve 10 questions at once instead of multiple times
 - [x] Optimise CSS class bindings for button
-- [ ] Adapt CSS to Bulma
+- [x] Adapt CSS to Bulma
 - [ ] Add progress bar component
 - [ ] Additional features for tracking:
   - [ ] Average response time

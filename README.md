@@ -22,7 +22,7 @@ $ yarn generate
 ### Quiz Page
 
 - [x] Retrieve 10 questions at once instead of multiple times
-- [ ] Optimise CSS class bindings for button
+- [x] Optimise CSS class bindings for button
 - [ ] Adapt CSS to Bulma
 - [ ] Add progress bar component
 - [ ] Additional features for tracking:

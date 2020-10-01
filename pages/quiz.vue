@@ -16,18 +16,7 @@
         <div class="choiceText" v-html="choice"></div>
       </div>
     </div>
-    <button
-      :class="{
-        button: true,
-        'is-outline': true,
-        'is-loading': isLoading,
-        'is-fullwidth': true,
-        'is-large': true,
-      }"
-      @click="nextQuestion"
-    >
-      Submit!
-    </button>
+    <button :class="submitClass" @click="nextQuestion">Submit!</button>
     <div
       v-show="selected"
       :class="{ status: true, correct: selected == correctAnswer }"
@@ -48,15 +37,24 @@ export default {
     meta: [{ charset: 'utf-8' }],
   },
   data() {
+    let isLoading = false
+    let submitClass = {
+      button: true,
+      'is-outline': true,
+      'is-loading': isLoading,
+      'is-fullwidth': true,
+      'is-large': true,
+    }
     return {
       apiData: null,
       choices: null,
       selected: null,
       correctAnswer: null,
       question: null,
+      isLoading,
+      submitClass,
       questionsAttempted: 0,
       correctAnswerCount: 0,
-      isLoading: false,
     }
   },
   methods: {
@@ -91,7 +89,7 @@ export default {
         })
     } else {
       if (this.selected == this.correctAnswer) {
-        console.log("Correct answer!")
+        console.log('Correct answer!')
         this.correctAnswerCount++
       }
       const data = this.apiData.pop()

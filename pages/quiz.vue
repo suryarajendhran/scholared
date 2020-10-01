@@ -42,27 +42,34 @@ const axios = require('axios')
 const shuffle = require('shuffle-array')
 const htmlToText = require('html-to-text')
 export default {
+  name: 'QuizPage',
   head: {
     title: 'Quiz | Scholared',
     meta: [{ charset: 'utf-8' }],
   },
   data() {
     return {
+      apiData: null,
       choices: null,
       selected: null,
       correctAnswer: null,
       question: null,
-      currentQuestionNumber: 1,
       questionsAttempted: 0,
+      correctAnswerCount: 0,
       isLoading: false,
     }
   },
   methods: {
     async nextQuestion() {
-      if (this.selected == this.correctAnswer) {
-        this.correctAnswerCount++
-      }
       await this.$fetch()
+    },
+    updateData: function (data) {
+      this.question = data.question
+      this.choices = [...data.incorrect_answers, data.correct_answer]
+      shuffle(this.choices)
+      this.correctAnswer = data.correct_answer
+      this.questionsAttempted++
+      this.isLoading = false
     },
   },
   computed: {
@@ -72,38 +79,26 @@ export default {
   },
   async fetch() {
     this.isLoading = true
-    await axios
-      .get(
-        'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
-      )
-      .then((response) => {
-        let result = response.data.results[0]
-        this.question = result.question
-        this.choices = [...result.incorrect_answers, result.correct_answer]
-        shuffle(this.choices)
-        this.correctAnswer = result.correct_answer
-        this.questionsAttempted++
-        this.selected = null
-        this.isLoading = false
-      })
+    if (this.apiData == null) {
+      await axios
+        .get(
+          'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple'
+        )
+        .then((response) => {
+          this.apiData = response.data.results
+          const data = this.apiData.pop()
+          this.updateData(data)
+        })
+    } else {
+      if (this.selected == this.correctAnswer) {
+        console.log("Correct answer!")
+        this.correctAnswerCount++
+      }
+      const data = this.apiData.pop()
+      this.updateData(data)
+      this.selected = null
+    }
   },
-  async asyncData({ params }) {
-    await axios
-      .get(
-        'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple'
-      )
-      .then((response) => {
-        console.log(response)
-        console.log(response.data.results[0])
-        let result = response.data.results[0]
-        let question = result.question
-        let choices = [...result.incorrect_answers, result.correct_answer]
-        shuffle(choices)
-        let correctAnswer = result.correct_answer
-        return { result, question, choices, correctAnswer }
-      })
-  },
-  loading: true,
 }
 </script>
 

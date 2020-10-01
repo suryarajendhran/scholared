@@ -21,7 +21,7 @@ $ yarn generate
 
 ### Quiz Page
 
-- [ ] Retrieve 10 questions at once instead of multiple times
+- [x] Retrieve 10 questions at once instead of multiple times
 - [ ] Optimise CSS class bindings for button
 - [ ] Adapt CSS to Bulma
 - [ ] Add progress bar component

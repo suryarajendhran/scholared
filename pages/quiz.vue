@@ -1,12 +1,12 @@
 <template>
   <div id="quizBody" class="fade-in">
     <ProgressBar />
-    <div id="questionCounter">
+    <div id="questionCounter" class="is-size-2-desktop is-size-3-tablet is-size-4-mobile">
       Question {{ questionsAttempted }}<span id="totalQuestions">/10</span>
     </div>
     <hr style="border-style: dotted; border-width: 1px" />
-    <div id="question" v-html="question"></div>
-    <div class="choices">
+    <div id="question" class="is-size-1-desktop is-size-2-tablet is-size-3-mobile" v-html="question"></div>
+    <div class="choices is-size-3-desktop is-size-4-touch">
       <div
         :class="{ choice: true, selected: selected == choice }"
         v-for="choice in choices"
@@ -17,12 +17,12 @@
       </div>
     </div>
     <button :class="submitClass" @click="nextQuestion">Submit!</button>
-    <div
+    <!-- <div
       v-show="selected"
       :class="{ status: true, correct: selected == correctAnswer }"
     >
       Selected answer: {{ selectedText }}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -44,6 +44,8 @@ export default {
       'is-loading': isLoading,
       'is-fullwidth': true,
       'is-large': true,
+      'is-size-3-desktop': true,
+      'is-size-5-touch': true
     }
     return {
       apiData: null,
@@ -105,11 +107,8 @@ body {
   background-color: #252c4a;
 }
 #quizBody {
-  /* height: 100%; */
-  /* width: 100%; */
   padding: 5% 10%;
   background-color: #252c4a;
-  /* background-color: aliceblue; */
 }
 
 #totalQuestions {
@@ -119,12 +118,10 @@ body {
 
 #questionCounter {
   color: #939cc5;
-  font-size: 2.5rem;
 }
 
 #question {
   color: #ffffff;
-  font-size: 4rem;
 }
 
 .choices {
@@ -135,13 +132,21 @@ body {
   row-gap: 10px;
 }
 
+@media screen and (max-width: 1023px) {
+  .choices {
+    grid-template-columns: 100%;
+  }
+  .choice {
+    padding: 0 0 0 3%;
+  }
+}
+
 .choice {
   margin: 0px 0px 1% 0px;
-  padding: 0 0 0 1%;
+  padding: 0 0 0 2%;
   border: 4px solid #204c6e;
   border-radius: 10px;
   color: #ffffff;
-  font-size: 2rem;
   background-color: #243150;
   display: grid;
   grid-template-columns: 90% 10%;
@@ -191,13 +196,6 @@ body {
   }
   100% {
     opacity: 1;
-  }
-}
-
-@media all and (max-width: 30em) {
-   .plainButton {
-    display: block;
-    margin: 0.4em auto;
   }
 }
 </style>

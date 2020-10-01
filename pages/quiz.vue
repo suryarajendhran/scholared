@@ -1,11 +1,18 @@
 <template>
   <div id="quizBody" class="container px-2 py-2 fade-in">
     <ProgressBar />
-    <div id="questionCounter" class="is-size-2-desktop is-size-3-tablet is-size-4-mobile">
+    <div
+      id="questionCounter"
+      class="is-size-2-desktop is-size-3-tablet is-size-4-mobile"
+    >
       Question {{ questionsAttempted }}<span id="totalQuestions">/10</span>
     </div>
-    <hr style="border-style: dotted; border-width: 1px" />
-    <div id="question" class="is-size-1-desktop is-size-2-tablet is-size-3-mobile" v-html="question"></div>
+    <hr />
+    <div
+      id="question"
+      class="is-size-1-desktop is-size-2-tablet is-size-3-mobile"
+      v-html="question"
+    ></div>
     <div class="choices is-size-3-desktop is-size-4-touch">
       <div
         :class="{ choice: true, selected: selected == choice }"
@@ -45,7 +52,7 @@ export default {
       'is-fullwidth': true,
       'is-large': true,
       'is-size-3-desktop': true,
-      'is-size-5-touch': true
+      'is-size-5-touch': true,
     }
     return {
       apiData: null,
@@ -107,9 +114,9 @@ body {
   background-color: #252c4a;
   overflow: hidden;
 }
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   display: none;
-}
+} */
 
 #quizBody {
   background-color: #252c4a;
@@ -127,6 +134,10 @@ body::-webkit-scrollbar {
 #question {
   color: #ffffff;
 }
+hr {
+  border-style: dotted;
+  border-width: 1px;
+}
 
 .choices {
   margin: 10% 0% 5% 0%;
@@ -142,6 +153,9 @@ body::-webkit-scrollbar {
   }
   .choice {
     padding: 0 0 0 3%;
+  }
+  hr {
+    margin-top: 0;
   }
 }
 

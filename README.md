@@ -24,10 +24,10 @@ $ yarn generate
 - [x] Retrieve 10 questions at once instead of multiple times
 - [x] Optimise CSS class bindings for button
 - [x] Adapt CSS to Bulma
-- [ ] Add progress bar component
-- [ ] Additional features for tracking:
-  - [ ] Average response time
-  - [ ] Number of choice changes
+- [ ] Add progress bar component (defer)
+- [x] Additional features for tracking:
+  - [x] Average response time
+  - [x] Number of choice changes
 - [ ] Add counter and results page
 - [ ] Style button
 - [ ] Add receive context inside the asyncData function

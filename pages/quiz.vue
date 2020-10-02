@@ -18,12 +18,19 @@
         :class="{ choice: true, selected: selected == choice }"
         v-for="choice in choices"
         :key="choice"
-        @click="selected = choice"
+        @click="
+          () => {
+            selected = choice
+            choiceChanges++
+          }
+        "
       >
         <div class="choiceText" v-html="choice"></div>
       </div>
     </div>
-    <button :class="submitClass" @click="nextQuestion">Submit!</button>
+    <button :class="submitClass" @click="nextQuestion" :disabled="!selected">
+      Submit!
+    </button>
     <div
       v-show="selected"
       :class="{
@@ -68,11 +75,26 @@ export default {
       isLoading,
       submitClass,
       questionsAttempted: 0,
+      maxQuestions: 10,
       correctAnswerCount: 0,
+      answerData: [],
+      questionStartTime: null,
+      choiceChanges: 0,
     }
   },
   methods: {
     async nextQuestion() {
+      if (this.questionsAttempted == this.maxQuestions) {
+        console.log('All questions attempted!')
+        return
+      }
+      const elapsedTime = (new Date().getTime() - this.questionStartTime) / 1000
+      this.answerData.push({
+        timeTaken: elapsedTime,
+        question: this.question,
+        choiceChanges: this.choiceChanges,
+      })
+      console.log(this.answerData)
       await this.$fetch()
     },
     updateData: function (data) {
@@ -82,6 +104,8 @@ export default {
       this.correctAnswer = data.correct_answer
       this.questionsAttempted++
       this.isLoading = false
+      this.questionStartTime = new Date().getTime()
+      this.choiceChanges = 0
     },
   },
   computed: {

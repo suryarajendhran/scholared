@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ modal: true, 'is-active': isActive & !toggleClose }">
+  <div :class="{ modal: true, 'is-active': isActive }">
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
@@ -9,7 +9,11 @@
       </div>
     </div>
     <button
-      @click="toggleClose = true"
+      @click="
+        {
+          $emit('close-modal')
+        }
+      "
       class="modal-close is-large"
       aria-label="close"
     ></button>
@@ -49,15 +53,6 @@ export default {
         this.avgResponseTime =
           timeData.reduce((a, b) => a + b, 0) / timeData.length
         console.log(this.avgResponseTime)
-      }
-    },
-  },
-  computed: {
-    isModalActive: function () {
-      if (isActive) {
-        return true
-      } else {
-        return false
       }
     },
   },

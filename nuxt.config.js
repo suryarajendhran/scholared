@@ -20,7 +20,14 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-  buildModules: [],
+  buildModules: ['@nuxtjs/fontawesome'],
+
+  fontawesome: {
+    icons: {
+      solid: true,
+      brands: true,
+    },
+  },
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
@@ -42,7 +49,7 @@ export default {
 
   loading: {
     color: 'white',
-    height: '5px'
+    height: '5px',
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

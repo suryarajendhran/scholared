@@ -1,6 +1,7 @@
 <template>
   <div id="quizBody" class="container px-2 py-2 fade-in">
     <ProgressBar />
+    <ResultsModal :results="results" :isActive="modalActive"/>
     <div
       id="questionCounter"
       class="is-size-2-desktop is-size-3-tablet is-size-4-mobile"
@@ -85,18 +86,30 @@ export default {
       answerData: [],
       questionStartTime: null,
       choiceChanges: 0,
+      results: null,
+      modalActive: false
     }
   },
   methods: {
     async nextQuestion() {
       if (this.questionsAttempted == this.maxQuestions) {
         console.log('All questions attempted!')
+        // All questions are answered!
+        this.results = {
+          correctAnswers: this.correctAnswerCount,
+          answerData: this.answerData,
+          totalQuestions: this.questionsAttempted,
+        }
+        this.modalActive = true
         return
       }
       const elapsedTime = (new Date().getTime() - this.questionStartTime) / 1000
       this.answerData.push({
         timeTaken: elapsedTime,
         question: this.question,
+        correctAnswer: this.correctAnswer,
+        selectedAnswer: this.selected,
+        isCorrect: (this.selected == this.correctAnswer),
         choiceChanges: this.choiceChanges,
       })
       console.log(this.answerData)
@@ -222,7 +235,7 @@ hr {
 }
 
 .correct {
-  color: greenyellow;
+  color: hotpink;
 }
 
 .fade-in {

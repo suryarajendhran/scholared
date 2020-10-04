@@ -28,7 +28,12 @@
         <div class="choiceText" v-html="choice"></div>
       </div>
     </div>
-    <button :class="submitClass" @click="nextQuestion" :disabled="!selected">
+    <button
+      id="submitButton"
+      :class="submitClass"
+      @click="nextQuestion"
+      :disabled="!selected"
+    >
       Submit!
     </button>
     <div
@@ -140,28 +145,23 @@ export default {
 
 <style>
 body {
-  background-color: #252c4a;
   overflow: hidden;
 }
 /* body::-webkit-scrollbar {
   display: none;
 } */
 
-#quizBody {
-  background-color: #252c4a;
-}
-
 #totalQuestions {
   font-size: 1.5rem;
-  color: #6d759a;
+  color: #666666;
 }
 
 #questionCounter {
-  color: #939cc5;
+  color: #4f4f50;
 }
 
 #question {
-  color: #ffffff;
+  color: #000000;
 }
 hr {
   border-style: dotted;
@@ -191,17 +191,17 @@ hr {
 .choice {
   margin: 0px 0px 1% 0px;
   padding: 0 0 0 2%;
-  border: 4px solid #204c6e;
+  border: 4px solid #555555;
   border-radius: 10px;
-  color: #ffffff;
-  background-color: #243150;
+  color: #000000;
+  background-color: #f3f3f3;
   display: grid;
   grid-template-columns: 90% 10%;
   cursor: pointer;
 }
 
 .choice:hover {
-  border: 4px solid #3875a5;
+  border: 4px solid #000000;
 }
 
 .checkBox {
@@ -211,8 +211,9 @@ hr {
 }
 
 .selected {
-  background: #204c6e;
-  border: 4px solid #3875a5;
+  background: #000000;
+  border: 4px solid #000000;
+  color: #ffffff;
 }
 
 .status {
@@ -227,6 +228,11 @@ hr {
 .fade-in {
   -webkit-animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+#submitButton {
+  border: 2px solid #000000;
+  border-radius: 10px;
 }
 
 @-webkit-keyframes fade-in {

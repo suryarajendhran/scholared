@@ -22,9 +22,9 @@
             formattedChoiceChanges
           }}</span>
         </p>
-        <button class="button is-white" @click="printResults">
+        <!-- <button class="button is-white" @click="printResults">
           View results array
-        </button>
+        </button> -->
       </div>
     </div>
     <button

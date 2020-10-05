@@ -28,7 +28,7 @@ $ yarn generate
 - [x] Additional features for tracking:
   - [x] Average response time
   - [x] Number of choice changes
-- [ ] Add counter and results page
+- [x] Add counter and results page
 - [ ] Style button
 - [ ] Add receive context inside the asyncData function
 - [ ] Add option to change category
